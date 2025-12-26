@@ -8,7 +8,9 @@ import {
   query, 
   where,
   Timestamp,
-  writeBatch
+  writeBatch,
+  onSnapshot,
+  Unsubscribe
 } from 'firebase/firestore';
 import { db } from '../config/firebaseConfig';
 
@@ -29,7 +31,7 @@ export interface Coupon {
 const COUPONS_COLLECTION = 'coupons';
 
 /**
- * Fetch all coupons from Firestore
+ * Fetch all coupons from Firestore (one-time)
  */
 export async function fetchCoupons(): Promise<Coupon[]> {
   try {
@@ -43,6 +45,43 @@ export async function fetchCoupons(): Promise<Coupon[]> {
   } catch (error) {
     console.error('Error fetching coupons:', error);
     throw error;
+  }
+}
+
+/**
+ * Subscribe to real-time updates for all coupons
+ * Returns an unsubscribe function to stop listening
+ * 
+ * @param callback - Function called whenever coupons change
+ * @returns Unsubscribe function
+ */
+export function subscribeToCoupons(
+  callback: (coupons: Coupon[]) => void
+): Unsubscribe {
+  try {
+    const couponsRef = collection(db, COUPONS_COLLECTION);
+    
+    const unsubscribe = onSnapshot(
+      couponsRef,
+      (snapshot) => {
+        const coupons = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Coupon[];
+        callback(coupons);
+      },
+      (error) => {
+        console.error('Error in coupons subscription:', error);
+        // Still call callback with empty array on error to prevent UI breaking
+        callback([]);
+      }
+    );
+    
+    return unsubscribe;
+  } catch (error) {
+    console.error('Error setting up coupons subscription:', error);
+    // Return a no-op unsubscribe function on error
+    return () => {};
   }
 }
 

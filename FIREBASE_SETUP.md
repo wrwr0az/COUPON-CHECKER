@@ -86,9 +86,9 @@ service cloud.firestore {
 
 ## Step 6: Import Initial Data (Optional)
 
-If you have existing coupons in `coupons.json`, you can import them:
+If you have existing coupons, you can import them:
 
-1. Use the admin dashboard (access via `#admin` in URL)
+1. Use the admin dashboard (access via `#admin` in URL) to upload an Excel file
 2. Or use Firebase Console to manually add documents to the `coupons` collection
 
 ## Step 7: Test the App
