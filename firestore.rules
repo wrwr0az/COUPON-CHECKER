@@ -3,17 +3,65 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to validate coupon data structure
+    function isValidCoupon() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['code', 'validFrom', 'validTo', 'used', 'usedBy', 'usedDate', 'note']) &&
+             data.code is string &&
+             data.code.size() > 0 &&
+             data.validFrom is string &&
+             data.validTo is string &&
+             data.used is bool &&
+             data.usedBy is string &&
+             data.usedDate is string &&
+             data.note is string;
+    }
+
+    // Helper function to check if update is only marking coupon as used
+    // This allows public users to mark coupons as used during verification
+    function isMarkAsUsedUpdate() {
+      let changedKeys = request.resource.data.diff(resource.data).affectedKeys();
+      // Only allow changes to: used, usedBy, usedDate, note, updatedAt
+      // Must be changing from unused to used
+      return changedKeys.hasOnly(['used', 'usedBy', 'usedDate', 'note', 'updatedAt']) &&
+             request.resource.data.used == true &&
+             resource.data.used == false &&
+             // Ensure code, validFrom, validTo are not changed
+             request.resource.data.code == resource.data.code &&
+             request.resource.data.validFrom == resource.data.validFrom &&
+             request.resource.data.validTo == resource.data.validTo;
+    }
+
+    // Coupons collection rules
+    match /coupons/{couponId} {
+      // Allow read access to everyone (for coupon verification)
+      allow read: if true;
+      
+      // Allow create only for authenticated admin users with valid data
+      allow create: if isAuthenticated() && isValidCoupon();
+      
+      // Allow update in two scenarios:
+      // 1. Anyone can mark a coupon as used (for public verification)
+      // 2. Authenticated users can do full updates (for admin dashboard)
+      allow update: if 
+        // Allow marking coupon as used by anyone (public verification)
+        // This is needed for the public coupon verification feature
+        isMarkAsUsedUpdate() ||
+        // Allow full updates by authenticated users (admin operations)
+        (isAuthenticated() && isValidCoupon());
+      
+      // Allow delete only for authenticated admin users
+      allow delete: if isAuthenticated();
+    }
+
+    // Deny all other access
     match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2026, 1, 23);
+      allow read, write: if false;
     }
   }
 }

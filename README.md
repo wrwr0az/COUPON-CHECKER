@@ -77,7 +77,7 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 
 # Admin Configuration
-VITE_ADMIN_EMAIL=admin@coupones-soma.web.app
+VITE_ADMIN_EMAIL=your_email
 ```
 
 ### 5. Configure Firestore Security Rules
@@ -258,7 +258,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📞 Support
 
-For support, email your-email@example.com or open an issue in the repository.
+For support, email almuflehi.abdulaziz@gmail.com or open an issue in the repository.
 
 ## 🙏 Acknowledgments
 
