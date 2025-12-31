@@ -44,9 +44,13 @@ const CouponVerification: React.FC = () => {
       // Step 2: Check if coupon is already used
       if (coupon.used) {
         const formattedDate = formatToDDMMYYYY(coupon.usedDate || '');
+        const typeText = coupon.type ? ` (${coupon.type})` : '';
+        const usedByText = coupon.usedBy !== 'غير معروف' && coupon.usedBy !== '' && coupon.usedBy.trim() 
+          ? ` مستخدم بالفعل بواسطة: ${coupon.usedBy}` 
+          : ' مستخدم بالفعل';
         setResult({
           success: false,
-          message: `هذا الكوبون مستخدم بالفعل بواسطة: ${coupon.usedBy || 'غير معروف'} في تاريخ: ${formattedDate}`,
+          message: `هذا الكوبون${typeText}${usedByText} في تاريخ: ${formattedDate}`,
         });
         setLoading(false);
         return;
@@ -105,10 +109,11 @@ const CouponVerification: React.FC = () => {
       
       await markCouponAsUsed(coupon.id);
       
-      // Return success message
+      // Return success message with coupon type
+      const typeText = coupon.type ? ` (${coupon.type})` : '';
       setResult({
         success: true,
-        message: 'تم تفعيل الكوبون بنجاح! شكراً لاستخدامك.',
+        message: `تم تفعيل الكوبون${typeText} بنجاح! شكراً لاستخدامك.`,
       });
       setCode('');
 

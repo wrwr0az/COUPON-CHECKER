@@ -162,6 +162,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
     try {
       await addCoupon({
         code: formData.code,
+        type: formData.type,
         validFrom: formData.validFrom,
         validTo: formData.validTo,
         used: formData.used,
