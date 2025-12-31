@@ -115,70 +115,70 @@ const CouponsTable: React.FC<CouponsTableProps> = ({
             <thead>
               <tr className="border-b-2 border-gray-200">
                 <th 
-                  className="text-right py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
+                  className="text-center py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
                   onClick={() => onSort('code')}
                 >
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-center">
                     {getSortIcon('code', sortField, sortDirection)}
                     <span>الرمز</span>
                   </div>
                 </th>
                 <th 
-                  className="text-right py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
+                  className="text-center py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
                   onClick={() => onSort('type')}
                 >
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-center">
                     {getSortIcon('type', sortField, sortDirection)}
                     <span>النوع</span>
                   </div>
                 </th>
                 <th 
-                  className="text-right py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
+                  className="text-center py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
                   onClick={() => onSort('validFrom')}
                 >
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-center">
                     {getSortIcon('validFrom', sortField, sortDirection)}
                     <span>من</span>
                   </div>
                 </th>
                 <th 
-                  className="text-right py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
+                  className="text-center py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
                   onClick={() => onSort('validTo')}
                 >
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-center">
                     {getSortIcon('validTo', sortField, sortDirection)}
                     <span>إلى</span>
                   </div>
                 </th>
                 <th 
-                  className="text-right py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
+                  className="text-center py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
                   onClick={() => onSort('used')}
                 >
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-center">
                     {getSortIcon('used', sortField, sortDirection)}
                     <span>الحالة</span>
                   </div>
                 </th>
                 <th 
-                  className="text-right py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
+                  className="text-center py-3 px-4 font-bold text-gray-700 cursor-pointer hover:bg-gray-50 select-none"
                   onClick={() => onSort('usedBy')}
                 >
-                  <div className="flex items-center justify-end">
+                  <div className="flex items-center justify-center">
                     {getSortIcon('usedBy', sortField, sortDirection)}
                     <span>المستخدم</span>
                   </div>
                 </th>
-                <th className="text-right py-3 px-4 font-bold text-gray-700">الإجراءات</th>
+                <th className="text-center py-3 px-4 font-bold text-gray-700">الإجراءات</th>
               </tr>
             </thead>
             <tbody>
               {filteredAndSortedCoupons.map((coupon) => (
                 <tr key={coupon.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 font-mono font-bold">{coupon.code}</td>
-                  <td className="py-3 px-4">{coupon.type || '-'}</td>
-                  <td className="py-3 px-4">{coupon.validFrom}</td>
-                  <td className="py-3 px-4">{coupon.validTo}</td>
-                  <td className="py-3 px-4">
+                  <td className="text-center py-3 px-4 font-mono font-bold">{coupon.code}</td>
+                  <td className="text-center py-3 px-4">{coupon.type || '-'}</td>
+                  <td className="text-center py-3 px-4">{coupon.validFrom}</td>
+                  <td className="text-center py-3 px-4">{coupon.validTo}</td>
+                  <td className="text-center py-3 px-4">
                     <span className={`px-3 py-1 rounded-full text-sm font-bold ${
                       coupon.used 
                         ? 'bg-green-100 text-green-800' 
@@ -187,9 +187,9 @@ const CouponsTable: React.FC<CouponsTableProps> = ({
                       {coupon.used ? 'مستخدم' : 'غير مستخدم'}
                     </span>
                   </td>
-                  <td className="py-3 px-4">{coupon.usedBy || '-'}</td>
-                  <td className="py-3 px-4">
-                    <div className="flex gap-2">
+                  <td className="text-center py-3 px-4">{coupon.usedBy || '-'}</td>
+                  <td className="text-center py-3 px-4">
+                    <div className="flex gap-2 justify-center">
                       <button
                         onClick={() => onEdit(coupon)}
                         className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 text-sm font-bold"
